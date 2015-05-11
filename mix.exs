@@ -17,7 +17,7 @@ defmodule FansWebsocket.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {FansWebsocket, []},
-     applications: [:phoenix, :cowboy, :logger,
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex]]
   end
 
@@ -34,6 +34,8 @@ defmodule FansWebsocket.Mixfile do
      {:phoenix_ecto, "~> 0.3"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_live_reload, "~> 0.4.0"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:exrm, "~> 0.14.16"}
+   ]
   end
 end

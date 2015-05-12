@@ -3,7 +3,8 @@ import {Socket} from "phoenix"
 let chatInput         = $("#chat-input")
 let messagesContainer = $("#messages")
 
-let socket = new Socket("ws://ruanwz.me:4000/ws")
+#let socket = new Socket("ws://ruanwz.me:4000/ws")
+let socket = new Socket("/ws")
 
 socket.connect()
 socket.join("rooms:lobby", {}).receive("ok", chan => {

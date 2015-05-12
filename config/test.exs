@@ -11,9 +11,10 @@ config :logger, level: :warn
 
 # Configure your database
 config :fans_websocket, FansWebsocket.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "fans_websocket_test",
+  adapter: Ecto.Adapters.MySQL,
+  username: "admin",
+  password: "admin",
+  database: "fans_server_test",
+  hostname: "localhost",
   size: 1,
   max_overflow: 0

@@ -28,7 +28,9 @@ config :logger, :console, format: "[$level] $message\n"
 
 # Configure your database
 config :fans_websocket, FansWebsocket.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "fans_websocket_dev"
+
+  adapter: Ecto.Adapters.MySQL,
+  username: "admin",
+  password: "admin",
+  database: "fans_server_dev",
+  hostname: "localhost"

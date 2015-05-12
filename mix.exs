@@ -18,7 +18,7 @@ defmodule FansWebsocket.Mixfile do
   def application do
     [mod: {FansWebsocket, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :mariaex]]
   end
 
   # Specifies which paths to compile per environment
@@ -33,6 +33,7 @@ defmodule FansWebsocket.Mixfile do
      {:phoenix_html, ">= 1.0.0"},
      {:phoenix_ecto, "~> 0.3"},
      {:postgrex, ">= 0.0.0"},
+     {:mariaex, ">= 0.0.0"},
      {:phoenix_live_reload, "~> 0.4.0"},
      {:cowboy, "~> 1.0"},
      {:exrm, "~> 0.14.16"}

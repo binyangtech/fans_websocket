@@ -24,8 +24,8 @@ defmodule FansWebsocket.RoomChannel do
     :ignore
   end
 
-  def handle_in("new_msg", %{"body" => body}, socket) do
-    broadcast! socket, "new_msg", %{body: body}
+  def handle_in("new_msg", %{"data" => data}, socket) do
+    broadcast! socket, "new_msg", %{data: data}
     {:noreply, socket}
   end
 

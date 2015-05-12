@@ -11,6 +11,7 @@ config :fans_websocket, FansWebsocket.Endpoint,
   root: Path.expand("..", __DIR__),
   secret_key_base: "18dcixDxEXYqlLQVLljQaYXQ4vdRswjuw6myFdi7iLVerqO9LABj4eLk44uC1bKJ",
   debug_errors: false,
+  # server: true,
   pubsub: [name: FansWebsocket.PubSub,
            adapter: Phoenix.PubSub.PG2]
 

@@ -13,6 +13,7 @@
 
   <body>
     <div class="container">
+      <!--
       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
@@ -22,6 +23,7 @@
 
       <p class="alert alert-info"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger"><%= get_flash(@conn, :error) %></p>
+      -->
 
       <%= @inner %>
 

@@ -7,7 +7,7 @@ let messagesContainer = $("#messages")
 let socket = new Socket("/ws")
 
 socket.connect()
-socket.join("rooms:lobby", {}).receive("ok", chan => {
+socket.join("rooms:lobby", {"token": "abc"}).receive("ok", chan => {
   console.log("Welcome to Phoenix Chat!")
 
   chatInput.off("keypress").on("keypress", event => {

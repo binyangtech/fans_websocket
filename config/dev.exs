@@ -32,5 +32,5 @@ config :fans_websocket, FansWebsocket.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: "admin",
   password: "admin",
-  database: "fans_server_dev",
+  database: "fans_server_development",
   hostname: "localhost"

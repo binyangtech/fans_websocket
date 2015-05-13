@@ -10,7 +10,7 @@ defmodule FansWebsocket.ChatMessage do
   #   t.datetime "inserted_at",                 null: false
   #   t.datetime "updated_at"
   # end
-  schema "circle_messages" do
+  schema "chat_messages" do
     field :chat_group_id, :integer
     field :user_id, :integer
     field :kind, :integer

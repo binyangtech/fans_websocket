@@ -18,7 +18,7 @@ defmodule FansWebsocket.Router do
     get "/", PageController, :index
   end
   socket "/ws", FansWebsocket do
-    channel "rooms:*", RoomChannel #, via: [WebSocket]
+    channel "groups:*", GroupChannel #, via: [WebSocket]
     channel "news:*", NewsChannel #, via: [WebSocket]
   end
   # Other scopes may use custom stacks.

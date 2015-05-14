@@ -48,7 +48,8 @@ defmodule FansWebsocket.GroupChannel do
           chat_group_id: group_id,
           user_id: user_id,
           kind: 0,
-          content: content
+          content: content,
+          deleted: false
         }
         changeset = ChatMessage.changeset(%ChatMessage{}, message_params)
         if changeset.valid? do

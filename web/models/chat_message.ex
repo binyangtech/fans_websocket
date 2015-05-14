@@ -20,7 +20,7 @@ defmodule FansWebsocket.ChatMessage do
     timestamps
   end
 
-  @required_fields ~w(content kind chat_group_id user_id)
+  @required_fields ~w(content kind chat_group_id user_id deleted)
   @optional_fields ~w()
 
   @doc """

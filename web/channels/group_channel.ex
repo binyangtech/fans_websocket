@@ -13,7 +13,9 @@ defmodule FansWebsocket.GroupChannel do
     at = List.first(result)
     cond do
       is_nil(at) ->
-        :ignore
+        reply = %{"error_message" => "Authentication Failed"}
+        # :ignore
+        {:error, reply}
       at.active == true ->
         socket = assign(socket, :token, token)
         socket = assign(socket, :user_id, at.user_id)
@@ -21,7 +23,9 @@ defmodule FansWebsocket.GroupChannel do
         IO.puts socket.assigns[:user_id]
         {:ok, socket}
       true ->
-        :ignore
+        # :ignore
+        reply = %{"error_message" => "Authentication Failed"}
+        {:error, reply}
     end
   end
 

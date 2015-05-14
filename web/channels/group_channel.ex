@@ -42,20 +42,21 @@ defmodule FansWebsocket.GroupChannel do
     IO.puts user_id
     IO.puts data["user_info"]["nickname"]
     IO.puts data["user_info"]["avatar_url"]
+
+    message_params = %{
+      chat_group_id: group_id,
+      user_id: user_id,
+      kind: 0,
+      content: content,
+      deleted: false
+    }
+    changeset = ChatMessage.changeset(%ChatMessage{}, message_params)
+    #socket.assigns[:user_id] == data["user_info"]["user_id"] ->
+
     cond do
-      socket.assigns[:user_id] == data["user_info"]["user_id"] ->
-        message_params = %{
-          chat_group_id: group_id,
-          user_id: user_id,
-          kind: 0,
-          content: content,
-          deleted: false
-        }
-        changeset = ChatMessage.changeset(%ChatMessage{}, message_params)
-        if changeset.valid? do
-          Repo.insert(changeset)
-          broadcast! socket, "new_msg", %{data: data}
-        end
+      changeset.valid? ->
+        Repo.insert(changeset)
+        broadcast! socket, "new_msg", %{data: data}
         {:noreply, socket}
       true ->
         {:noreply, socket}

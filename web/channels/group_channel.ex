@@ -38,7 +38,8 @@ defmodule FansWebsocket.GroupChannel do
     IO.puts kind
     group_id = data["group_id"]
     IO.puts group_id
-    user_id = data["user_info"]["user_id"]
+    # user_id = data["user_info"]["user_id"]
+    user_id = socket.assigns[:user_id]
     IO.puts user_id
     IO.puts data["user_info"]["nickname"]
     IO.puts data["user_info"]["avatar_url"]

@@ -7,7 +7,9 @@ let messagesContainer = $("#messages")
 let socket = new Socket("/ws")
 
 socket.connect()
+
 socket.join("groups:1", {"token": "abc"}).receive("ok", chan => {
+  console.log(chan);
   console.log("Welcome to Chat!")
 
   chatInput.off("keypress").on("keypress", event => {

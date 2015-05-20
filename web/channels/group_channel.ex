@@ -3,6 +3,7 @@ defmodule FansWebsocket.GroupChannel do
   alias FansWebsocket.Repo
   alias FansWebsocket.AccessToken
   alias FansWebsocket.ChatMessage
+  alias FansWebsocket.User
   import Ecto.Query
 
   import Logger
@@ -19,6 +20,7 @@ defmodule FansWebsocket.GroupChannel do
       at.active == true ->
         socket = assign(socket, :token, token)
         socket = assign(socket, :user_id, at.user_id)
+        send(self, :after_join)
         IO.puts socket.assigns[:token]
         IO.puts socket.assigns[:user_id]
         {:ok, socket}
@@ -28,6 +30,14 @@ defmodule FansWebsocket.GroupChannel do
         {:error, reply}
     end
   end
+
+  def handle_info(:after_join, socket) do
+    # chat_messages = from(cm in ChatMessage, join: u in User, on: cm.user_id == u.id, select: [cm.inserted_at, cm.kind, cm.content, u.nickname, u.avatar_url], limit: 10, order_by: [desc: cm.inserted_at]) |> Repo.all()
+    chat_messages = from(cm in ChatMessage, join: u in User, on: cm.user_id == u.id, select: %{nickname: u.nickname, avatar_url: u.avatar_url, kind: cm.kind, inserted_at: cm.inserted_at, content: cm.content}, limit: 10, order_by: [desc: cm.inserted_at]) |> Repo.all()
+    push socket, "msg_feed", %{history_chat_messages: chat_messages}
+    {:noreply, socket}
+  end
+
 
   #def join("groups:" <> _private_group_id, _auth_msg, socket) do
   #  :ignore

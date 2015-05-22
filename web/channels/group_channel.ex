@@ -46,6 +46,9 @@ defmodule FansWebsocket.GroupChannel do
     {:noreply, socket}
   end
 
+  def handle_in("phx_join", _, socket) do
+    {:noreply, socket}
+  end
 
   #def join("groups:" <> _private_group_id, _auth_msg, socket) do
   #  :ignore

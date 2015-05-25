@@ -14,7 +14,7 @@ config :fans_websocket, FansWebsocket.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: "admin",
   password: "admin",
-  database: "fans_server_test",
+  database: "fans_websocket_test",
   hostname: "localhost",
   size: 1,
   max_overflow: 0

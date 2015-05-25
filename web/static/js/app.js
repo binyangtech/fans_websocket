@@ -11,6 +11,12 @@ socket.connect()
 socket.join("groups:1", {"token": "abc"}).receive("ok", chan => {
   console.log(chan);
   console.log("Welcome to Chat!")
+  chan.push("query", {data:
+    {
+      command: "people_in_group",
+      group_id: 1
+    }
+  })
 
   chatInput.off("keypress").on("keypress", event => {
     if(event.keyCode === 13){

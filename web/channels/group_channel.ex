@@ -7,7 +7,15 @@ defmodule FansWebsocket.GroupChannel do
   import Ecto.Query
 
   import Logger
+  defp user_info(socket) do
+    user_id = socket.assigns[:user_id]
+    nickname = socket.assigns[:nickname]
+    avatar_url = socket.assigns[:avatar_url]
+    "#{user_id}||#{nickname}||#{avatar_url}"
+  end
+
   def join("groups:" <> group_id, %{"token" => token}, socket) do
+    group_id = String.to_integer(group_id)
     #Logger.info token
     query = from at in AccessToken, where: at.token == ^token, select: at
     result = Repo.all(query)
@@ -26,9 +34,11 @@ defmodule FansWebsocket.GroupChannel do
         socket = assign(socket, :nickname, user.nickname)
         socket = assign(socket, :avatar_url, user.avatar_url)
         send(self, :after_join)
+        {:ok, result} = FansWebsocket.ChatGroupStateAgent.put group_id, user_info(socket)
+        IO.puts "stateagent"
+        IO.puts Set.to_list(result)
         IO.puts socket.assigns[:token]
         IO.puts socket.assigns[:user_id]
-
 
         {:ok, socket}
       true ->
@@ -38,9 +48,19 @@ defmodule FansWebsocket.GroupChannel do
     end
   end
 
+  def terminate(reason, socket) do
+    %{topic: topic} = socket
+    IO.puts topic
+    "groups"
+    "groups:"<>group_id = topic
+    id = String.to_integer(group_id)
+    {:ok, result} = FansWebsocket.ChatGroupStateAgent.delete id, user_info(socket)
+    broadcast! socket, "user:leaved", %{user_id: socket.assigns[:user_id], nickname: socket.assigns[:nickname], avatar_url: socket.assigns[:avatar_url]}
+  end
+
   def handle_info(:after_join, socket) do
     # chat_messages = from(cm in ChatMessage, join: u in User, on: cm.user_id == u.id, select: [cm.inserted_at, cm.kind, cm.content, u.nickname, u.avatar_url], limit: 10, order_by: [desc: cm.inserted_at]) |> Repo.all()
-    chat_messages = from(cm in ChatMessage, join: u in User, on: cm.user_id == u.id, select: %{user_id: u.id, nickname: u.nickname, avatar_url: u.avatar_url, kind: cm.kind, inserted_at: cm.inserted_at, content: cm.content}, limit: 10, order_by: [desc: cm.inserted_at]) |> Repo.all()
+    chat_messages = from(cm in ChatMessage, join: u in User, on: cm.user_id == u.id, select: %{user_id: u.id, nickname: u.nickname, avatar_url: u.avatar_url, kind: cm.kind, inserted_at: cm.inserted_at, content: cm.content}, limit: 20, order_by: [desc: cm.inserted_at]) |> Repo.all()
     push socket, "msg_feed", %{history_chat_messages: chat_messages}
     broadcast! socket, "user:joined", %{user_id: socket.assigns[:user_id], nickname: socket.assigns[:nickname], avatar_url: socket.assigns[:avatar_url]}
     {:noreply, socket}
@@ -53,6 +73,20 @@ defmodule FansWebsocket.GroupChannel do
   #def join("groups:" <> _private_group_id, _auth_msg, socket) do
   #  :ignore
   #end
+
+  def handle_in("query", %{"data" => data}, socket) do
+    command = data["command"]
+    group_id = data["group_id"]
+    case command do
+      "people_in_group" ->
+        {:ok, people}= FansWebsocket.ChatGroupStateAgent.get group_id
+        IO.puts "people_in_group"
+        IO.puts Set.to_list(people)
+        {:reply, {:ok, %{result: Set.to_list(people)}}, socket}
+      _ ->
+        {:noreply, socket}
+    end
+  end
 
   def handle_in("new_msg", %{"data" => data}, socket) do
     IO.puts socket.assigns[:token]
@@ -99,4 +133,8 @@ defmodule FansWebsocket.GroupChannel do
     {:noreply, socket}
   end
 
+  def handle_out("user:leaved", msg, socket) do
+    push socket, "user:leaved", msg
+    {:noreply, socket}
+  end
 end

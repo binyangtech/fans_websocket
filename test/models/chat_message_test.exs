@@ -3,7 +3,7 @@ defmodule FansWebsocket.ChatMessageTest do
 
   alias FansWebsocket.ChatMessage
 
-  @valid_attrs %{content: "some content", kind: 42, chat_group_id: 1, user_id: 2}
+  @valid_attrs %{content: "some content", kind: 42, chat_group_id: 1, user_id: 2, deleted: false}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
